@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Plugin Developer Guide & Reference Examples**:
+  - `docs/DEVELOPER_GUIDE.md`: Comprehensive, step-by-step developer guide covering the micro-extension architecture, command anatomy, complete lifecycle hooks, `ExecutionContext` API reference, UI kit, and testing.
+  - `examples/vault-librarian/command.js`: Reference micro-extension directory bundle demonstrating `init`, `canExecute`, `execute`, `cleanup`, `onError`, `context.vault`, `context.ui.suggest`, `context.ui.prompt`, `context.ui.toast` with action buttons, and serial FIFO queue scheduling.
+  - `examples/daily-review.macro.json`: Reference companion declarative macro chaining `vault-librarian` with native Obsidian commands.
+  - `examples/README.md`: Documentation and vault installation instructions for example plugins.
+  - `tests/examples.test.ts`: Automated unit and integration test suite validating example command bundle discovery, lifecycle enforcement, and execution (99 passing tests across 16 test suites).
+
 ## [1.0.0] - 2026-10-01
 
 ### Added

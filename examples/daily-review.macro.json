@@ -1,0 +1,18 @@
+{
+  "id": "daily-review-macro",
+  "name": "Daily Review Pipeline",
+  "description": "Runs Vault Librarian note analytics and saves the note via native Obsidian commands.",
+  "icon": "clipboard-check",
+  "steps": [
+    {
+      "commandId": "vault-librarian",
+      "name": "Run Vault Librarian",
+      "onError": "continue"
+    },
+    {
+      "commandId": "editor:save-file",
+      "name": "Save Active Note",
+      "onError": "continue"
+    }
+  ]
+}

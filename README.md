@@ -48,6 +48,13 @@ In OCC, **every command is a lightweight micro-extension** with its own lifecycl
 
 ---
 
+## Developer Guide & Examples
+
+- 📖 **[Plugin Developer Guide (`./docs/DEVELOPER_GUIDE.md`)](./docs/DEVELOPER_GUIDE.md)** — Complete tutorial and API reference for building OCC micro-extensions, lifecycle hooks, interactive UI components, queues, and macros.
+- 💡 **[Example Plugins & Macros (`./examples/`)](./examples/)** — Ready-to-use reference implementations, including the **Vault Librarian** directory bundle and the **Daily Review** macro pipeline.
+
+---
+
 ## Specification & Documentation
 
 Detailed project specifications, architecture, requirements, and roadmaps are organized in [`./spec/obsidian-command-center/`](./spec/obsidian-command-center/):
