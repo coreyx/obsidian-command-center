@@ -174,6 +174,10 @@ export class MockPlugin {
 
   addSettingTab(_tab: any): void {}
 
+  registerDomEvent(el: any, type: string, callback: any): void {
+    el?.addEventListener?.(type, callback);
+  }
+
   async loadData(): Promise<any> {
     return this.data;
   }

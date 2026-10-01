@@ -77,6 +77,9 @@ export class Plugin {
     el.className = "status-bar-item";
     return el;
   }
+  registerDomEvent(el: any, type: string, callback: any): void {
+    el?.addEventListener?.(type, callback);
+  }
   async loadData(): Promise<any> {
     return {};
   }

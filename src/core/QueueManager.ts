@@ -17,6 +17,7 @@ export class FIFOQueue {
   private items: QueuedItem[] = [];
   private processing = false;
   private halted = false;
+  private paused = false;
 
   constructor(public readonly name: string, public options: QueueOptions = {}) {}
 
@@ -32,6 +33,10 @@ export class FIFOQueue {
     return this.halted;
   }
 
+  get isPaused(): boolean {
+    return this.paused;
+  }
+
   public push<T>(task: () => Promise<T> | T): Promise<T> {
     if (this.halted) {
       return Promise.reject(new QueueHaltedError(`Queue "${this.name}" is halted`));
@@ -39,7 +44,7 @@ export class FIFOQueue {
 
     return new Promise<T>((resolve, reject) => {
       this.items.push({ task, resolve, reject });
-      if (!this.processing) {
+      if (!this.processing && !this.paused) {
         this.processNext();
       }
     });
@@ -48,7 +53,7 @@ export class FIFOQueue {
   private async processNext(): Promise<void> {
     if (this.processing) return;
     if (this.items.length === 0) return;
-    if (this.halted) return;
+    if (this.halted || this.paused) return;
 
     this.processing = true;
     const item = this.items.shift()!;
@@ -76,7 +81,7 @@ export class FIFOQueue {
       }
     } finally {
       this.processing = false;
-      if (!this.halted && this.items.length > 0) {
+      if (!this.halted && !this.paused && this.items.length > 0) {
         this.processNext();
       }
     }
@@ -89,7 +94,12 @@ export class FIFOQueue {
     }
   }
 
+  public pause(): void {
+    this.paused = true;
+  }
+
   public resume(): void {
+    this.paused = false;
     this.halted = false;
     if (this.items.length > 0 && !this.processing) {
       this.processNext();
@@ -114,6 +124,18 @@ export class QueueManager {
   push<T>(name: string, task: () => Promise<T> | T, options?: QueueOptions): Promise<T> {
     const queue = this.getQueue(name, options);
     return queue.push(task);
+  }
+
+  pauseAll(): void {
+    for (const queue of this.queues.values()) {
+      queue.pause();
+    }
+  }
+
+  resumeAll(): void {
+    for (const queue of this.queues.values()) {
+      queue.resume();
+    }
   }
 
   clearAll(): void {

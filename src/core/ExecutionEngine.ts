@@ -7,6 +7,7 @@ import { QueueManager } from "./QueueManager";
 import { DebounceThrottleManager } from "./DebounceThrottleManager";
 import { BackgroundWorkerManager } from "./BackgroundWorkerManager";
 import { ExecutionLogger } from "./ExecutionLogger";
+import { ExecutionWatchdog, ExecutionTimeoutError } from "./ExecutionWatchdog";
 
 export interface ExecutionEngineOptions {
   app: App;
@@ -18,6 +19,7 @@ export interface ExecutionEngineOptions {
   debounceThrottleManager?: DebounceThrottleManager;
   workerManager?: BackgroundWorkerManager;
   logger?: ExecutionLogger;
+  watchdog?: ExecutionWatchdog;
 }
 
 export class ExecutionEngine {
@@ -30,6 +32,7 @@ export class ExecutionEngine {
   private debounceThrottleManager: DebounceThrottleManager;
   private workerManager: BackgroundWorkerManager;
   private logger: ExecutionLogger;
+  private watchdog: ExecutionWatchdog;
 
   constructor(options: ExecutionEngineOptions) {
     this.app = options.app;
@@ -41,6 +44,7 @@ export class ExecutionEngine {
     this.debounceThrottleManager = options.debounceThrottleManager ?? new DebounceThrottleManager();
     this.workerManager = options.workerManager ?? new BackgroundWorkerManager();
     this.logger = options.logger ?? new ExecutionLogger();
+    this.watchdog = options.watchdog ?? new ExecutionWatchdog();
   }
 
   public getQueueManager(): QueueManager {
@@ -57,6 +61,10 @@ export class ExecutionEngine {
 
   public getLogger(): ExecutionLogger {
     return this.logger;
+  }
+
+  public getWatchdog(): ExecutionWatchdog {
+    return this.watchdog;
   }
 
   /**
@@ -162,9 +170,20 @@ export class ExecutionEngine {
 
     const startTime = Date.now();
 
-    // 2. Main execution payload
+    // 2. Main execution payload (with watchdog timeout guard unless isBackground)
     try {
-      const result = await command.execute(context);
+      let executionPromise: Promise<unknown>;
+      if (command.metadata.isBackground) {
+        executionPromise = Promise.resolve().then(() => command.execute(context));
+      } else {
+        executionPromise = this.watchdog.race(
+          command.metadata.name,
+          Promise.resolve().then(() => command.execute(context)),
+          command.metadata.timeout
+        );
+      }
+
+      const result = await executionPromise;
       this.logger.log({
         timestamp: startTime,
         commandId: command.metadata.id,
@@ -191,9 +210,16 @@ export class ExecutionEngine {
           console.error(`[OCC] Error in onError handler for "${command.metadata.id}":`, recoveryErr);
         }
       }
-      context.ui.toast(`Command "${command.metadata.name}" failed: ${error.message}`, {
-        type: "error",
-      });
+
+      const isTimeout = error instanceof ExecutionTimeoutError;
+      context.ui.toast(
+        isTimeout
+          ? `Command "${command.metadata.name}" timed out!`
+          : `Command "${command.metadata.name}" failed: ${error.message}`,
+        {
+          type: isTimeout ? "warning" : "error",
+        }
+      );
       throw error;
     }
   }

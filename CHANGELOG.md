@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Milestone 9: Hardening, Security, Performance & Release CI**:
+  - `ExecutionWatchdog`: Execution timeout guard racing command execution against a configurable timeout (default 15,000ms), raising `ExecutionTimeoutError`, alerting users with warning toasts, and exempting background tasks (`REQ-25`).
+  - `SecuritySandbox`: Opt-in Safe Execution Mode proxy masking Node.js `child_process`, `cluster`, `worker_threads`, and direct `fs` modules with `SecurityViolationError` while preserving complete vault access via `context.vault` (`REQ-26`).
+  - Dashboard configuration controls for Safe Execution Mode and execution timeout in milliseconds.
+  - Cross-platform mobile polish: Hooked into mobile app lifecycle events (`pause` and `resume`) to automatically pause and resume serial queues, and added WCAG/mobile minimum 44x44px touch targets in `styles.css`.
+  - Performance benchmarks verifying command dispatch overhead is strictly below 5ms (< 0.1ms measured) and 100 consecutive hot-reload cycles complete with zero state corruption or memory leaks.
+  - Automated GitHub Actions CI workflow (`.github/workflows/ci.yml`) running `typecheck`, Vitest test suite, and production bundle build on push and pull requests to `main`.
+  - 13 new unit tests and benchmarks in `tests/hardening.test.ts` (93 total tests across 15 test suites).
 - **Milestone 8: Developer Experience (DX), Scaffolding & Type Safety**:
   - `TypeDefinitionGenerator`: Automated TypeScript declaration file generator producing a comprehensive `occ.d.ts` in the commands folder for complete IDE autocomplete and inline documentation.
   - `CommandScaffolder`: Interactive command scaffolding engine generating slugified IDs, filenames, and boilerplate code for both scripts (`*.js`) and declarative macros (`*.macro.json`).

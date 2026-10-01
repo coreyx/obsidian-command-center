@@ -12,6 +12,8 @@ import type { CommandFileDescriptor } from "./types/command";
 import { StatusBarMonitor } from "./ui/StatusBarMonitor";
 import { TypeDefinitionGenerator } from "./core/TypeDefinitionGenerator";
 import { CommandScaffolder } from "./core/CommandScaffolder";
+import { SecuritySandbox } from "./core/SecuritySandbox";
+import { ExecutionWatchdog } from "./core/ExecutionWatchdog";
 
 export default class CommandCenterPlugin extends Plugin {
   public settings: OCCSettings = DEFAULT_SETTINGS;
@@ -22,24 +24,40 @@ export default class CommandCenterPlugin extends Plugin {
   public watcher!: FileWatcher;
   public lifecycle!: LifecycleManager;
   public statusBarMonitor?: StatusBarMonitor;
+  public sandbox!: SecuritySandbox;
+  public watchdog!: ExecutionWatchdog;
   public typeGen = new TypeDefinitionGenerator();
   public scaffolder = new CommandScaffolder();
 
   async onload(): Promise<void> {
     await this.loadSettings();
 
-    // 1. Initialize core subsystems
+    // 1. Initialize core subsystems and security guardrails
+    this.sandbox = new SecuritySandbox(this.settings.safeExecutionMode);
+    this.watchdog = new ExecutionWatchdog(this.settings.defaultTimeout);
+
     this.scanner = new CommandScanner(this.app);
-    this.loader = new ModuleLoader(this.app);
+    this.loader = new ModuleLoader(this.app, this.sandbox);
     this.registry = new CommandRegistry(this.app, this, async (id) => {
       return this.engine.execute(id);
     });
     this.engine = new ExecutionEngine({
       app: this.app,
       registry: this.registry,
+      watchdog: this.watchdog,
     });
     this.lifecycle = new LifecycleManager(this.app, this.registry, this.loader);
     this.watcher = new FileWatcher(this.app);
+
+    // Register mobile app lifecycle pause/resume handlers
+    if (typeof document !== "undefined") {
+      this.registerDomEvent(document as any, "pause" as any, () => {
+        this.engine.getQueueManager().pauseAll();
+      });
+      this.registerDomEvent(document as any, "resume" as any, () => {
+        this.engine.getQueueManager().resumeAll();
+      });
+    }
 
     // 2. Ensure TypeScript declaration file (occ.d.ts) exists
     try {

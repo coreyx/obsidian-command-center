@@ -307,7 +307,7 @@ flowchart LR
 
 ## Milestone 9: Hardening, Security, Performance & Cross-Platform Polish
 
-- [ ] **TASK-32: Execution Watchdog & Timeout Guard**
+- [x] **TASK-32: Execution Watchdog & Timeout Guard**
   - **Implementation Steps:**
     1. Implement `ExecutionWatchdog` racing execution against a configurable timeout (default 15s).
     2. If timeout expires, abort the command and throw `ExecutionTimeoutError`.
@@ -315,7 +315,7 @@ flowchart LR
     4. Exempt background workers from synchronous timeouts.
   - **Acceptance Criteria:** [REQ-25.1](./requirements.md#L313), [REQ-25.2](./requirements.md#L314), [REQ-25.3](./requirements.md#L315).
 
-- [ ] **TASK-33: Safe Execution Sandboxing Proxy**
+- [x] **TASK-33: Safe Execution Sandboxing Proxy**
   - **Implementation Steps:**
     1. Implement opt-in Safe Execution Mode toggle in settings.
     2. In Safe Mode, wrap script evaluation in a Proxy sandbox masking Node `child_process`.
@@ -323,7 +323,7 @@ flowchart LR
     4. Throw `SecurityViolationError` upon unauthorized access attempts.
   - **Acceptance Criteria:** [REQ-26.1](./requirements.md#L324), [REQ-26.2](./requirements.md#L325), [REQ-26.3](./requirements.md#L326).
 
-- [ ] **TASK-34: Performance Benchmarking & Dispatch Profiling**
+- [x] **TASK-34: Performance Benchmarking & Dispatch Profiling**
   - **Implementation Steps:**
     1. Build automated benchmark suite measuring command dispatch overhead.
     2. Verify dispatch overhead is strictly below 5ms.
@@ -331,14 +331,14 @@ flowchart LR
     4. Profile hot-reload cycles to ensure zero memory leaks across 100 consecutive reloads.
   - **Acceptance Criteria:** [REQ-12.1](./requirements.md#L159), [REQ-12.3](./requirements.md#L161).
 
-- [ ] **TASK-35: Mobile Compatibility Verification & Touch Polish**
+- [x] **TASK-35: Mobile Compatibility Verification & Touch Polish**
   - **Implementation Steps:**
     1. Test script evaluation on mobile runtime via `app.vault.adapter`.
     2. Adapt interactive toast buttons and modals for mobile touch hit targets (minimum 44x44px).
     3. Hook into mobile app lifecycle events (`pause`, `resume`) to suspend queues appropriately.
   - **Acceptance Criteria:** [REQ-01.1](./requirements.md#L32), [REQ-15.3](./requirements.md#L196), [REQ-17.1](./requirements.md#L218).
 
-- [ ] **TASK-36: Release Packaging & Automated CI Test Suite**
+- [x] **TASK-36: Release Packaging & Automated CI Test Suite**
   - **Implementation Steps:**
     1. Set up GitHub Actions CI workflow running typecheck, linter, and Vitest suite.
     2. Create automated release pipeline generating `manifest.json`, `main.js`, and `styles.css`.

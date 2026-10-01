@@ -294,3 +294,30 @@
   margin-top: 16px;
 }
 
+/* Mobile & Touch Hit Targets (minimum 44x44px for touch interfaces) */
+@media (hover: none) and (pointer: coarse), (max-width: 768px) {
+  .occ-toast-button {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .occ-nav-tab-btn {
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .occ-modal-button-container button {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px 18px;
+  }
+
+  .occ-task-cancel-btn {
+    min-height: 44px;
+    padding: 8px 16px;
+  }
+}
+

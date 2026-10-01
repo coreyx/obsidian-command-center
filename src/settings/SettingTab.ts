@@ -122,6 +122,33 @@ export class OCCSettingTab extends PluginSettingTab {
       );
 
     new Setting(container)
+      .setName("Safe Execution Mode")
+      .setDesc("Restrict direct access to Node.js child_process and external filesystem APIs outside the vault.")
+      .addToggle((toggle) =>
+        toggle.setValue(this.plugin.settings.safeExecutionMode).onChange(async (val) => {
+          this.plugin.settings.safeExecutionMode = val;
+          this.plugin.sandbox.setSafeMode(val);
+          await this.plugin.saveSettings();
+        })
+      );
+
+    new Setting(container)
+      .setName("Execution Timeout (ms)")
+      .setDesc("Maximum allowed runtime in milliseconds for synchronous commands before aborting (default: 15000).")
+      .addText((text) =>
+        text
+          .setPlaceholder("15000")
+          .setValue(String(this.plugin.settings.defaultTimeout))
+          .onChange(async (val) => {
+            const parsed = parseInt(val, 10);
+            const timeout = !isNaN(parsed) && parsed >= 0 ? parsed : 15000;
+            this.plugin.settings.defaultTimeout = timeout;
+            this.plugin.watchdog.setTimeout(timeout);
+            await this.plugin.saveSettings();
+          })
+      );
+
+    new Setting(container)
       .setName("Developer Type Definitions")
       .setDesc("Generate or update the 'occ.d.ts' TypeScript declaration file for full IDE autocomplete.")
       .addButton((btn) =>
