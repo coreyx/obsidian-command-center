@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Milestone 4: Interactive Feedback & Human-in-the-Loop UI**:
+  - `InteractiveToast`: Interactive notice component wrapping Obsidian's `Notice` with action buttons (`[Undo]`, `[Retry]`, etc.), variant styling (`primary`, `warning`), dynamic message updates, and error-safe action handlers.
+  - `PromptModal`: Modal dialog extending `Modal` for single-line and multiline user text input with keyboard submission (`Enter`) and cancellation (`Escape`).
+  - `ConfirmModal`: Confirmation modal dialog providing configurable confirm and cancel buttons and labels, returning a boolean promise.
+  - `SuggestPickerModal`: Fuzzy search and selection modal extending `SuggestModal<T>` for choosing from arbitrary arrays of objects or strings with custom `renderItem` support.
+  - `OCCProgressReporter`: Throttled (60fps) batch progress bar notice reporting real-time step progress (`update({ current, total, message })`) and automatic completion notice on `finish()`.
+  - `OCCUIHelper` & `UIHelperImpl`: Clean, unified UI helper surface exposed directly on `context.ui`.
+  - Full Obsidian-native dark/light theme CSS styling for action toasts, modals, and progress bars in `styles.css`.
+  - 18 new unit tests in `tests/ui.test.ts` (50 total unit tests across 10 test suites).
+
 ## [0.1.0] - 2026-10-01
 
 ### Added

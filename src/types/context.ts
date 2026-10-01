@@ -37,10 +37,40 @@ export interface ConfirmOptions {
   cancelLabel?: string;
 }
 
+export interface SuggestOptions<T> {
+  title?: string;
+  placeholder?: string;
+  renderItem?: (item: T) => string;
+}
+
+export interface ProgressUpdate {
+  current?: number;
+  total?: number;
+  message?: string;
+}
+
+export interface ProgressReporter {
+  update(update: ProgressUpdate): void;
+  finish(completionMessage?: string): void;
+}
+
+export interface ProgressOptions {
+  title?: string;
+  total?: number;
+  initialMessage?: string;
+}
+
+export interface InteractiveToastHandle {
+  hide(): void;
+  setMessage(msg: string): void;
+}
+
 export interface OCCUIHelper {
-  toast(message: string, options?: ToastOptions): void;
+  toast(message: string, options?: ToastOptions): InteractiveToastHandle;
   prompt(options: PromptOptions): Promise<string | null>;
   confirm(options: ConfirmOptions): Promise<boolean>;
+  suggest<T>(items: T[], options?: SuggestOptions<T>): Promise<T | null>;
+  createProgress(options?: ProgressOptions): ProgressReporter;
 }
 
 export interface OCCCommandBridge {

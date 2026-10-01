@@ -13,21 +13,7 @@ import { Notice } from "obsidian";
 
 import { OCCCommandBridgeImpl } from "../core/CommandBridge";
 
-export class DefaultUIHelper implements OCCUIHelper {
-  toast(message: string, options?: ToastOptions): void {
-    const duration = options?.duration ?? 4000;
-    new Notice(message, duration);
-  }
-
-  async prompt(options: PromptOptions): Promise<string | null> {
-    // In headless or MVP, provide basic fallback, interactive modal added in M4
-    return options.defaultValue ?? null;
-  }
-
-  async confirm(options: ConfirmOptions): Promise<boolean> {
-    return true;
-  }
-}
+import { UIHelperImpl } from "../ui/UIHelperImpl";
 
 export interface ExecutionContextOptions {
   app: App;
@@ -70,7 +56,7 @@ export class ExecutionContextImpl implements ExecutionContext {
     this.workspace = options.app.workspace;
     this.vault = options.vaultHelper ?? new VaultHelperImpl(options.app);
     this.commands = options.commandBridge ?? new OCCCommandBridgeImpl(options.app);
-    this.ui = options.uiHelper ?? new DefaultUIHelper();
+    this.ui = options.uiHelper ?? new UIHelperImpl(options.app);
     this.abortSignal = options.abortSignal ?? new AbortController().signal;
     this.input = options.input;
     this.$prevOutput = options.prevOutput ?? options.input;

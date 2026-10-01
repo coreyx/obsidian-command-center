@@ -159,7 +159,7 @@ flowchart LR
 
 ## Milestone 4: Interactive Feedback & Human-in-the-Loop UI
 
-- [ ] **TASK-16: Interactive Action Toast Component**
+- [x] **TASK-16: Interactive Action Toast Component**
   - **Implementation Steps:**
     1. Implement `InteractiveToast` wrapping Obsidian's native `Notice`.
     2. Inject action button container (`div.occ-toast-actions`) into `noticeEl`.
@@ -167,7 +167,7 @@ flowchart LR
     4. Support persistent toasts (`duration: 0`) and automatic dismissal on action click.
   - **Acceptance Criteria:** [REQ-17.1](./requirements.md#L218), [REQ-17.2](./requirements.md#L219), [REQ-17.3](./requirements.md#L220).
 
-- [ ] **TASK-17: Modal Prompt Utilities (`prompt`, `confirm`, `suggest`)**
+- [x] **TASK-17: Modal Prompt Utilities (`prompt`, `confirm`, `suggest`)**
   - **Implementation Steps:**
     1. Implement `PromptModal` extending `Modal` for text input with Enter-to-submit and Escape-to-cancel.
     2. Implement `ConfirmModal` providing configurable Confirm and Cancel buttons, returning a boolean.
@@ -175,7 +175,7 @@ flowchart LR
     4. Expose all methods cleanly on `context.ui`.
   - **Acceptance Criteria:** [REQ-18.1](./requirements.md#L229), [REQ-18.2](./requirements.md#L230), [REQ-18.3](./requirements.md#L231).
 
-- [ ] **TASK-18: Batch Progress Indicator**
+- [x] **TASK-18: Batch Progress Indicator**
   - **Implementation Steps:**
     1. Implement `ProgressReporter` with `update({ current, total, message })` and `finish()`.
     2. Render progress bar inside an interactive toast or status bar item.
