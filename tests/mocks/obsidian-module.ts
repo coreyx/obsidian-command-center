@@ -144,16 +144,78 @@ export class Setting {
   addButton(cb: (btn: any) => any): this {
     const buttonEl = document.createElement("button");
     this.settingEl.appendChild(buttonEl);
-    cb({
+    const btnComponent: any = {
       buttonEl,
       setButtonText: (t: string) => {
         buttonEl.textContent = t;
-        return { onClick: () => ({}) };
+        return btnComponent;
+      },
+      setCta: () => {
+        buttonEl.classList.add("mod-cta");
+        return btnComponent;
+      },
+      setWarning: () => {
+        buttonEl.classList.add("mod-warning");
+        return btnComponent;
+      },
+      setDisabled: (d: boolean) => {
+        buttonEl.disabled = d;
+        return btnComponent;
+      },
+      setClass: (c: string) => {
+        buttonEl.classList.add(c);
+        return btnComponent;
       },
       onClick: (fn: () => void) => {
         buttonEl.addEventListener("click", fn);
+        return btnComponent;
       },
-    });
+    };
+    cb(btnComponent);
+    return this;
+  }
+  addToggle(cb: (toggle: any) => any): this {
+    const inputEl = document.createElement("input");
+    inputEl.type = "checkbox";
+    inputEl.className = "checkbox-container";
+    this.settingEl.appendChild(inputEl);
+    const toggleComponent: any = {
+      toggleEl: inputEl,
+      setValue: (v: boolean) => {
+        inputEl.checked = v;
+        return toggleComponent;
+      },
+      onChange: (fn: (val: boolean) => void) => {
+        inputEl.addEventListener("change", (e) => fn((e.target as HTMLInputElement).checked));
+        return toggleComponent;
+      },
+    };
+    cb(toggleComponent);
+    return this;
+  }
+  addDropdown(cb: (dropdown: any) => any): this {
+    const selectEl = document.createElement("select");
+    selectEl.className = "dropdown";
+    this.settingEl.appendChild(selectEl);
+    const dropdownComponent: any = {
+      selectEl,
+      addOption: (val: string, display: string) => {
+        const opt = document.createElement("option");
+        opt.value = val;
+        opt.textContent = display;
+        selectEl.appendChild(opt);
+        return dropdownComponent;
+      },
+      setValue: (v: string) => {
+        selectEl.value = v;
+        return dropdownComponent;
+      },
+      onChange: (fn: (val: string) => void) => {
+        selectEl.addEventListener("change", (e) => fn((e.target as HTMLSelectElement).value));
+        return dropdownComponent;
+      },
+    };
+    cb(dropdownComponent);
     return this;
   }
 }

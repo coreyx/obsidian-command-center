@@ -6,6 +6,7 @@ import type { CommandRegistry } from "./CommandRegistry";
 import { QueueManager } from "./QueueManager";
 import { DebounceThrottleManager } from "./DebounceThrottleManager";
 import { BackgroundWorkerManager } from "./BackgroundWorkerManager";
+import { ExecutionLogger } from "./ExecutionLogger";
 
 export interface ExecutionEngineOptions {
   app: App;
@@ -16,6 +17,7 @@ export interface ExecutionEngineOptions {
   queueManager?: QueueManager;
   debounceThrottleManager?: DebounceThrottleManager;
   workerManager?: BackgroundWorkerManager;
+  logger?: ExecutionLogger;
 }
 
 export class ExecutionEngine {
@@ -27,6 +29,7 @@ export class ExecutionEngine {
   private queueManager: QueueManager;
   private debounceThrottleManager: DebounceThrottleManager;
   private workerManager: BackgroundWorkerManager;
+  private logger: ExecutionLogger;
 
   constructor(options: ExecutionEngineOptions) {
     this.app = options.app;
@@ -37,6 +40,7 @@ export class ExecutionEngine {
     this.queueManager = options.queueManager ?? new QueueManager();
     this.debounceThrottleManager = options.debounceThrottleManager ?? new DebounceThrottleManager();
     this.workerManager = options.workerManager ?? new BackgroundWorkerManager();
+    this.logger = options.logger ?? new ExecutionLogger();
   }
 
   public getQueueManager(): QueueManager {
@@ -49,6 +53,10 @@ export class ExecutionEngine {
 
   public getWorkerManager(): BackgroundWorkerManager {
     return this.workerManager;
+  }
+
+  public getLogger(): ExecutionLogger {
+    return this.logger;
   }
 
   /**
@@ -152,11 +160,30 @@ export class ExecutionEngine {
       }
     }
 
+    const startTime = Date.now();
+
     // 2. Main execution payload
     try {
       const result = await command.execute(context);
+      this.logger.log({
+        timestamp: startTime,
+        commandId: command.metadata.id,
+        commandName: command.metadata.name,
+        durationMs: Math.max(0, Date.now() - startTime),
+        status: "success",
+      });
       return result;
     } catch (error: any) {
+      this.logger.log({
+        timestamp: startTime,
+        commandId: command.metadata.id,
+        commandName: command.metadata.name,
+        durationMs: Math.max(0, Date.now() - startTime),
+        status: "error",
+        error: error.message,
+        errorStack: error.stack,
+      });
+
       if (typeof command.onError === "function") {
         try {
           await command.onError(error, context);

@@ -179,3 +179,118 @@
   font-size: 12px;
 }
 
+/* Dashboard Navigation Tabs */
+.occ-nav-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  margin-bottom: 20px;
+  padding-bottom: 6px;
+}
+
+.occ-nav-tab-btn {
+  background: transparent;
+  border: none;
+  padding: 6px 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.occ-nav-tab-btn:hover {
+  background-color: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.occ-nav-tab-btn.is-active {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+/* Command Dashboard Table */
+.occ-tab-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.occ-dashboard-table,
+.occ-log-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.occ-dashboard-table th,
+.occ-dashboard-table td,
+.occ-log-table th,
+.occ-log-table td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--background-modifier-border);
+  font-size: var(--font-ui-small, 13px);
+}
+
+.occ-type-badge,
+.occ-status-badge,
+.occ-log-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.occ-type-script {
+  background-color: rgba(var(--color-purple-rgb, 150, 80, 255), 0.15);
+  color: var(--color-purple, #9650ff);
+}
+
+.occ-type-macro {
+  background-color: rgba(var(--color-cyan-rgb, 50, 180, 200), 0.15);
+  color: var(--color-cyan, #32b4c8);
+}
+
+.occ-status-enabled,
+.occ-log-badge-success {
+  background-color: rgba(var(--color-green-rgb, 50, 200, 100), 0.15);
+  color: var(--color-green, #32c864);
+}
+
+.occ-status-disabled {
+  background-color: rgba(var(--color-base-50-rgb, 150, 150, 150), 0.15);
+  color: var(--text-muted);
+}
+
+.occ-log-badge-error {
+  background-color: rgba(var(--color-red-rgb, 255, 50, 50), 0.15);
+  color: var(--color-red, #ff3232);
+}
+
+/* Macro Builder Step Cards */
+.occ-step-card {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background-color: var(--background-secondary);
+}
+
+.occ-step-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.occ-step-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.occ-builder-actions {
+  margin-top: 16px;
+}
+

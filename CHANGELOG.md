@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Milestone 7: Command Center Dashboard & Settings UI**:
+  - `OCCSettingTab`: Multi-tabbed dashboard interface with tab navigation across `Commands`, `Macro Builder`, `Execution Logs`, and `General Settings`.
+  - `CommandTableView`: Command registry dashboard displaying Name, ID, Source File, Type badge (`Script` vs `Macro`), Status badge, and instant toggle switches dynamically binding and unbinding commands in Obsidian.
+  - `MacroBuilderView`: No-code visual macro pipeline builder supporting step reordering (`↑`/`↓`), step removal, command assignment, configurable error policies (`halt`, `continue`, `fallback`), and direct compilation to `*.macro.json`.
+  - `ExecutionLogger`: 100-entry in-memory ring buffer recording real-time command execution telemetry, duration, status, and error traces.
+  - `LogViewerView`: Execution log viewer with real-time live updates, search query filtering by command ID/name, status filter dropdown (`All`, `Success`, `Error`), and one-click "Copy Diagnostics" JSON clipboard export.
+  - 7 new unit tests in `tests/settings.test.ts` (73 total unit tests across 13 test suites).
 - **Milestone 6: Background Worker Engine & Cancellation**:
   - `BackgroundWorkerManager`: Background task runner for long-running, detached operations declared via `metadata.isBackground: true`.
   - In-memory lifecycle tracking of background tasks with full state transitions: `PENDING`, `RUNNING`, `CANCELLED`, `COMPLETED`, and `FAILED`.

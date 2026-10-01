@@ -241,7 +241,7 @@ flowchart LR
 
 ## Milestone 7: Command Center Dashboard & Settings UI
 
-- [ ] **TASK-25: Settings Tab & Svelte 5 Mount Point**
+- [x] **TASK-25: Settings Tab & Svelte 5 Mount Point**
   - **Implementation Steps:**
     1. Implement `OCCSettingTab` extending `PluginSettingTab`.
     2. Mount the Svelte 5 root application into `containerEl`.
@@ -249,7 +249,7 @@ flowchart LR
     4. Cleanly unmount Svelte application when the settings tab is closed.
   - **Acceptance Criteria:** [REQ-20.1](./requirements.md#L253), [REQ-20.2](./requirements.md#L254).
 
-- [ ] **TASK-26: Command Registry Table View**
+- [x] **TASK-26: Command Registry Table View**
   - **Implementation Steps:**
     1. Create `CommandTable.svelte` rendering Name, ID, Source File, Type, and Status.
     2. Implement enable/disable toggles updating plugin settings and command bindings.
@@ -257,7 +257,7 @@ flowchart LR
     4. Render error badges and failure callouts for broken commands.
   - **Acceptance Criteria:** [REQ-20.1](./requirements.md#L253), [REQ-20.2](./requirements.md#L254), [REQ-20.3](./requirements.md#L255).
 
-- [ ] **TASK-27: Visual Macro Builder UI**
+- [x] **TASK-27: Visual Macro Builder UI**
   - **Implementation Steps:**
     1. Create `MacroBuilder.svelte` with a reorderable step list.
     2. Integrate autocomplete search for native Obsidian commands.
@@ -265,7 +265,7 @@ flowchart LR
     4. Implement "Save Macro" button serializing configuration directly to `*.macro.json`.
   - **Acceptance Criteria:** [REQ-21.1](./requirements.md#L264), [REQ-21.2](./requirements.md#L265), [REQ-21.3](./requirements.md#L266).
 
-- [ ] **TASK-28: Diagnostic Telemetry & Execution Log Viewer**
+- [x] **TASK-28: Diagnostic Telemetry & Execution Log Viewer**
   - **Implementation Steps:**
     1. Implement 100-entry in-memory ring-buffer recording execution events.
     2. Create `LogViewer.svelte` rendering timestamp, command ID, duration, and status.
