@@ -72,6 +72,11 @@ export class Plugin {
   addSettingTab(tab: any): any {
     return tab;
   }
+  addStatusBarItem(): HTMLElement {
+    const el = document.createElement("div");
+    el.className = "status-bar-item";
+    return el;
+  }
   async loadData(): Promise<any> {
     return {};
   }

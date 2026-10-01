@@ -5,6 +5,7 @@ import { ExecutionContextImpl } from "../context/ExecutionContextImpl";
 import type { CommandRegistry } from "./CommandRegistry";
 import { QueueManager } from "./QueueManager";
 import { DebounceThrottleManager } from "./DebounceThrottleManager";
+import { BackgroundWorkerManager } from "./BackgroundWorkerManager";
 
 export interface ExecutionEngineOptions {
   app: App;
@@ -14,6 +15,7 @@ export interface ExecutionEngineOptions {
   commandBridge?: OCCCommandBridge;
   queueManager?: QueueManager;
   debounceThrottleManager?: DebounceThrottleManager;
+  workerManager?: BackgroundWorkerManager;
 }
 
 export class ExecutionEngine {
@@ -24,6 +26,7 @@ export class ExecutionEngine {
   private commandBridge?: OCCCommandBridge;
   private queueManager: QueueManager;
   private debounceThrottleManager: DebounceThrottleManager;
+  private workerManager: BackgroundWorkerManager;
 
   constructor(options: ExecutionEngineOptions) {
     this.app = options.app;
@@ -33,6 +36,7 @@ export class ExecutionEngine {
     this.commandBridge = options.commandBridge;
     this.queueManager = options.queueManager ?? new QueueManager();
     this.debounceThrottleManager = options.debounceThrottleManager ?? new DebounceThrottleManager();
+    this.workerManager = options.workerManager ?? new BackgroundWorkerManager();
   }
 
   public getQueueManager(): QueueManager {
@@ -41,6 +45,10 @@ export class ExecutionEngine {
 
   public getDebounceThrottleManager(): DebounceThrottleManager {
     return this.debounceThrottleManager;
+  }
+
+  public getWorkerManager(): BackgroundWorkerManager {
+    return this.workerManager;
   }
 
   /**
@@ -85,14 +93,22 @@ export class ExecutionEngine {
       return this.debounceThrottleManager.throttle(commandId, run, command.metadata.throttle);
     }
 
-    // 3. Direct execution (with queue routing if declared)
+    // 3. Direct or background execution (with queue routing if declared)
     return run();
   }
 
   /**
-   * Routes command through serial queue if queueName is declared, otherwise executes directly.
+   * Routes command through background runner or serial queue if declared, otherwise executes directly.
    */
   private async runCommand(command: OCCCommand, initialInput?: unknown): Promise<unknown> {
+    if (command.metadata.isBackground) {
+      return this.workerManager.spawn(
+        command,
+        (ctx) => this.executeWithContext(command, ctx),
+        (signal) => this.createContext(initialInput, signal, command.metadata.id)
+      );
+    }
+
     if (command.metadata.queueName) {
       return this.queueManager.push(
         command.metadata.queueName,
@@ -105,12 +121,18 @@ export class ExecutionEngine {
   }
 
   /**
-   * Core execution pipeline: canExecute pre-validation, execute invocation, and onError recovery boundary.
+   * Core execution pipeline: creates context and executes.
    */
   private async executeCore(command: OCCCommand, initialInput?: unknown): Promise<unknown> {
     const abortController = new AbortController();
     const context = this.createContext(initialInput, abortController.signal, command.metadata.id);
+    return this.executeWithContext(command, context);
+  }
 
+  /**
+   * Inner execution logic: canExecute pre-validation, execute invocation, and onError recovery boundary.
+   */
+  private async executeWithContext(command: OCCCommand, context: ExecutionContext): Promise<unknown> {
     // 1. Pre-execution validation (canExecute)
     if (typeof command.canExecute === "function") {
       try {

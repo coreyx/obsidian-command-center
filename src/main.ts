@@ -9,6 +9,7 @@ import { FileWatcher } from "./core/FileWatcher";
 import { LifecycleManager } from "./core/LifecycleManager";
 import { OCCSettingTab } from "./settings/SettingTab";
 import type { CommandFileDescriptor } from "./types/command";
+import { StatusBarMonitor } from "./ui/StatusBarMonitor";
 
 export default class CommandCenterPlugin extends Plugin {
   public settings: OCCSettings = DEFAULT_SETTINGS;
@@ -18,6 +19,7 @@ export default class CommandCenterPlugin extends Plugin {
   public engine!: ExecutionEngine;
   public watcher!: FileWatcher;
   public lifecycle!: LifecycleManager;
+  public statusBarMonitor?: StatusBarMonitor;
 
   async onload(): Promise<void> {
     await this.loadSettings();
@@ -35,10 +37,18 @@ export default class CommandCenterPlugin extends Plugin {
     this.lifecycle = new LifecycleManager(this.app, this.registry, this.loader);
     this.watcher = new FileWatcher(this.app);
 
-    // 2. Register settings tab
+    // 2. Register status bar monitor for background tasks
+    const statusBarEl = this.addStatusBarItem();
+    this.statusBarMonitor = new StatusBarMonitor(
+      statusBarEl,
+      this.engine.getWorkerManager(),
+      this.app
+    );
+
+    // 3. Register settings tab
     this.addSettingTab(new OCCSettingTab(this.app, this));
 
-    // 3. Register management command
+    // 4. Register management command
     this.addCommand({
       id: "reload-commands",
       name: "Reload All Commands",
@@ -47,12 +57,12 @@ export default class CommandCenterPlugin extends Plugin {
       },
     });
 
-    // 4. Setup file watcher for zero-downtime hot-reloading
+    // 5. Setup file watcher for zero-downtime hot-reloading
     if (this.settings.enableHotReload) {
       this.setupFileWatcher();
     }
 
-    // 5. Initial command discovery and registration
+    // 6. Initial command discovery and registration
     this.app.workspace.onLayoutReady(async () => {
       await this.reloadAllCommands();
     });
@@ -62,7 +72,17 @@ export default class CommandCenterPlugin extends Plugin {
     // 1. Stop file watcher
     this.watcher?.stop();
 
-    // 2. Clean up all registered commands
+    // 2. Destroy status bar monitor
+    this.statusBarMonitor?.destroy();
+
+    // 3. Cancel active background workers and clear timers
+    this.engine?.getWorkerManager().cancelAll().catch((e) => {
+      console.error("[OCC] Error cancelling background workers on unload:", e);
+    });
+    this.engine?.getDebounceThrottleManager().clearAll();
+    this.engine?.getQueueManager().clearAll();
+
+    // 4. Clean up all registered commands
     const records = this.registry.listRecords();
     const context = this.engine.createContext();
     for (const record of records) {
@@ -70,10 +90,6 @@ export default class CommandCenterPlugin extends Plugin {
         console.error(`[OCC] Error during cleanup of "${record.command.metadata.id}":`, e);
       });
     }
-
-    // 3. Clear scheduled timers and queues
-    this.engine?.getDebounceThrottleManager().clearAll();
-    this.engine?.getQueueManager().clearAll();
 
     this.registry.clear();
   }

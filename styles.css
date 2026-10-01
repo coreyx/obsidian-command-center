@@ -115,3 +115,67 @@
   gap: 10px;
   margin-top: 16px;
 }
+
+/* Background Worker Status Bar & Task Inspector */
+.occ-status-bar-item {
+  cursor: pointer;
+}
+
+.occ-status-bar-item.occ-status-active {
+  color: var(--interactive-accent);
+  font-weight: 500;
+}
+
+.occ-task-inspector-modal {
+  padding: 16px;
+  min-width: 480px;
+}
+
+.occ-task-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+.occ-task-table th,
+.occ-task-table td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.occ-task-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.occ-badge-running,
+.occ-badge-pending {
+  background-color: rgba(var(--color-blue-rgb, 50, 150, 255), 0.15);
+  color: var(--color-blue, #3296ff);
+}
+
+.occ-badge-completed {
+  background-color: rgba(var(--color-green-rgb, 50, 200, 100), 0.15);
+  color: var(--color-green, #32c864);
+}
+
+.occ-badge-cancelled {
+  background-color: rgba(var(--color-orange-rgb, 255, 150, 50), 0.15);
+  color: var(--color-orange, #ff9632);
+}
+
+.occ-badge-failed {
+  background-color: rgba(var(--color-red-rgb, 255, 50, 50), 0.15);
+  color: var(--color-red, #ff3232);
+}
+
+.occ-task-cancel-btn {
+  padding: 2px 8px;
+  font-size: 12px;
+}
+

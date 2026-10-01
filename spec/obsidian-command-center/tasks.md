@@ -214,14 +214,14 @@ flowchart LR
 
 ## Milestone 6: Background Worker Engine & Cancellation
 
-- [ ] **TASK-22: Background Worker Execution Runner**
+- [x] **TASK-22: Background Worker Execution Runner**
   - **Implementation Steps:**
     1. Implement `BackgroundWorkerManager` to run detached async commands (`metadata.isBackground: true`).
     2. Maintain an in-memory map of `BackgroundTaskRecord` instances.
     3. Update worker lifecycle state (`PENDING`, `RUNNING`, `CANCELLED`, `COMPLETED`, `FAILED`).
   - **Acceptance Criteria:** [REQ-15.1](./requirements.md#L194), [REQ-15.3](./requirements.md#L196).
 
-- [ ] **TASK-23: Status Bar Monitor & Task Inspector Modal**
+- [x] **TASK-23: Status Bar Monitor & Task Inspector Modal**
   - **Implementation Steps:**
     1. Register an OCC item in the Obsidian status bar.
     2. Display dynamic status text and task counts when background jobs run.
@@ -229,7 +229,7 @@ flowchart LR
     4. Task Inspector displays active tasks, runtime durations, and cancellation buttons.
   - **Acceptance Criteria:** [REQ-15.1](./requirements.md#L194), [REQ-15.2](./requirements.md#L195).
 
-- [ ] **TASK-24: Cooperative Task Cancellation (`AbortSignal`)**
+- [x] **TASK-24: Cooperative Task Cancellation (`AbortSignal`)**
   - **Implementation Steps:**
     1. Instantiate an `AbortController` for each spawned background task.
     2. Inject `abortController.signal` into `context.abortSignal`.

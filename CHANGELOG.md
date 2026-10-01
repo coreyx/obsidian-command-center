@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Milestone 6: Background Worker Engine & Cancellation**:
+  - `BackgroundWorkerManager`: Background task runner for long-running, detached operations declared via `metadata.isBackground: true`.
+  - In-memory lifecycle tracking of background tasks with full state transitions: `PENDING`, `RUNNING`, `CANCELLED`, `COMPLETED`, and `FAILED`.
+  - `StatusBarMonitor`: Dynamic Obsidian status bar item indicating active task counts with click-to-inspect trigger.
+  - `TaskInspectorModal`: Real-time inspection modal displaying task durations, status badges, and cancellation controls.
+  - Cooperative task cancellation via standard `AbortSignal` (`context.abortSignal`) and automated invocation of command `cleanup(context)` hooks.
+  - 5 new unit tests in `tests/workers.test.ts` (66 total unit tests across 12 test suites).
 - **Milestone 5: Execution Engine — Async, Queuing & Scheduling**:
   - `context.yield()`: Cooperative yielding mechanism to relinquish the main JavaScript event loop during intensive operations, ensuring fluid typing and editor responsiveness.
   - `FIFOQueue` & `QueueManager`: Named serial FIFO queuing engine ensuring strict sequential, non-overlapping execution for note/vault mutating commands.
