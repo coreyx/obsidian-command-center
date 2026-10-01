@@ -1,0 +1,35 @@
+{
+  "name": "obsidian-command-center",
+  "version": "0.1.0",
+  "description": "An extensible automation runtime and macro orchestration engine for Obsidian.",
+  "main": "main.js",
+  "scripts": {
+    "dev": "node esbuild.config.mjs",
+    "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -noEmit -skipLibCheck"
+  },
+  "keywords": [
+    "obsidian",
+    "obsidian-plugin",
+    "command-center",
+    "macros",
+    "automation",
+    "scripting"
+  ],
+  "author": "Corey Struzan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coreyx/obsidian-command-center.git"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "esbuild": "^0.20.2",
+    "obsidian": "latest",
+    "tslib": "^2.6.2",
+    "typescript": "^5.4.5",
+    "vitest": "^1.5.0"
+  }
+}

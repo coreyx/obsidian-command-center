@@ -1,0 +1,59 @@
+# Obsidian Command Center (OCC)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-coreyx%2Fobsidian--command--center-lightgrey.svg)](https://github.com/coreyx/obsidian-command-center)
+
+**Obsidian Command Center (OCC)** is an extensible automation runtime and macro orchestration engine built for [Obsidian](https://obsidian.md). It bridges the gap between simple hotkey macros and heavyweight, standalone community plugins.
+
+In OCC, **every command is a lightweight micro-extension** with its own lifecycle hooks (`init`, `canExecute`, `execute`, `cleanup`, `onError`), input/output piping, concurrency queues, and interactive UI feedback.
+
+---
+
+## Key Features
+
+- **Open for Extension, Closed for Modification:** Add new automations without editing the core plugin or restarting Obsidian.
+- **Zero-Downtime Hot-Reloading:** Save a `.js`, `.mjs`, or `.json` file in your commands folder and it is instantly validated, compiled, and registered with Obsidian's Command Palette.
+- **Composable Macro Pipelines:** Chain native Obsidian commands and custom scripts, passing outputs from one step to the next (`context.$prevOutput`).
+- **Concurrency & Concurrency Queues:** Prevent race conditions on vault notes with named FIFO sequential queues.
+- **Interactive UI Kit:** Enhanced notices with action buttons (`[Undo]`, `[Retry]`), modal prompts, and batch progress bars.
+- **Background Workers:** Detached asynchronous jobs with live status-bar indicators and cooperative `AbortSignal` cancellation.
+
+---
+
+## Specification & Documentation
+
+Detailed project specifications, architecture, requirements, and roadmaps are organized in [`./spec/obsidian-command-center/`](./spec/obsidian-command-center/):
+
+- [Product Definition (`product.md`)](./spec/obsidian-command-center/product.md) — Product vision, personas, and problem space.
+- [Development Milestones (`milestones.md`)](./spec/obsidian-command-center/milestones.md) — 9 progressive milestones from MVP to release.
+- [EARS Requirements (`requirements.md`)](./spec/obsidian-command-center/requirements.md) — Rigorous functional and operational requirements (REQ-01 to REQ-26).
+- [Technology Stack (`tech.md`)](./spec/obsidian-command-center/tech.md) — Architecture decisions, runtimes, and dependencies.
+- [System Architecture & Design (`design.md`)](./spec/obsidian-command-center/design.md) — Subsystem blueprints, lifecycle state machine, and Mermaid diagrams.
+- [Implementation Tasks (`tasks.md`)](./spec/obsidian-command-center/tasks.md) — Checklist of 36 implementation tasks with step-by-step guides.
+
+---
+
+## Quick Start (Development)
+
+```bash
+# Clone the repository
+git clone https://github.com/coreyx/obsidian-command-center.git
+cd obsidian-command-center
+
+# Install dependencies
+pnpm install
+
+# Run unit and integration tests
+pnpm test
+
+# Build production bundle
+pnpm run build
+```
+
+---
+
+## Author & License
+
+- **Author:** Corey Struzan ([@coreyx](https://github.com/coreyx))
+- **Repository:** [`coreyx/obsidian-command-center`](https://github.com/coreyx/obsidian-command-center)
+- **License:** [MIT](./LICENSE)
