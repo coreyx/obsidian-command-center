@@ -277,7 +277,7 @@ flowchart LR
 
 ## Milestone 8: Developer Experience (DX), Scaffolding & Type Safety
 
-- [ ] **TASK-29: Automated Type Definition Generator (`occ.d.ts`)**
+- [x] **TASK-29: Automated Type Definition Generator (`occ.d.ts`)**
   - **Implementation Steps:**
     1. Implement `TypeDefinitionGenerator` bundling the complete OCC API typings.
     2. Generate `occ.d.ts` in the commands directory on plugin startup.
@@ -285,7 +285,7 @@ flowchart LR
     4. Ensure file write is atomic and non-destructive to user scripts.
   - **Acceptance Criteria:** [REQ-23.1](./requirements.md#L288), [REQ-23.2](./requirements.md#L289), [REQ-23.3](./requirements.md#L290).
 
-- [ ] **TASK-30: Interactive Command Scaffolder Wizard**
+- [x] **TASK-30: Interactive Command Scaffolder Wizard**
   - **Implementation Steps:**
     1. Register Obsidian command `Command Center: Create New Command`.
     2. Prompt user for command name via `context.ui.prompt()`.
@@ -294,7 +294,7 @@ flowchart LR
     5. Automatically open the newly created file in an active editor tab.
   - **Acceptance Criteria:** [REQ-24.1](./requirements.md#L299), [REQ-24.2](./requirements.md#L300), [REQ-24.3](./requirements.md#L301), [REQ-24.4](./requirements.md#L302).
 
-- [ ] **TASK-31: Starter Command Template Library**
+- [x] **TASK-31: Starter Command Template Library**
   - **Implementation Steps:**
     1. Bundle three production-ready starter templates:
        - `daily-briefing.js`: Inspects frontmatter and appends tasks.

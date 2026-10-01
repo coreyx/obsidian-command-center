@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Milestone 8: Developer Experience (DX), Scaffolding & Type Safety**:
+  - `TypeDefinitionGenerator`: Automated TypeScript declaration file generator producing a comprehensive `occ.d.ts` in the commands folder for complete IDE autocomplete and inline documentation.
+  - `CommandScaffolder`: Interactive command scaffolding engine generating slugified IDs, filenames, and boilerplate code for both scripts (`*.js`) and declarative macros (`*.macro.json`).
+  - `Command Center: Create New Command` command palette wizard prompting for name and type, generating the boilerplate, and automatically opening the file in Obsidian.
+  - Production-ready starter template library bundled with three templates: `daily-briefing.js`, `format-and-export.macro.json`, and `sync-notes-worker.js`.
+  - Settings buttons to regenerate `occ.d.ts` and install starter templates on demand.
+  - 7 new unit tests in `tests/dx.test.ts` (80 total unit tests across 14 test suites).
 - **Milestone 7: Command Center Dashboard & Settings UI**:
   - `OCCSettingTab`: Multi-tabbed dashboard interface with tab navigation across `Commands`, `Macro Builder`, `Execution Logs`, and `General Settings`.
   - `CommandTableView`: Command registry dashboard displaying Name, ID, Source File, Type badge (`Script` vs `Macro`), Status badge, and instant toggle switches dynamically binding and unbinding commands in Obsidian.

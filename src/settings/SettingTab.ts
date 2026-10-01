@@ -1,4 +1,4 @@
-import { App, PluginSettingTab, Setting } from "obsidian";
+import { App, Notice, PluginSettingTab, Setting } from "obsidian";
 import type CommandCenterPlugin from "../main";
 import { CommandTableView } from "./views/CommandTableView";
 import { MacroBuilderView } from "./views/MacroBuilderView";
@@ -119,6 +119,45 @@ export class OCCSettingTab extends PluginSettingTab {
             this.plugin.watcher?.stop();
           }
         })
+      );
+
+    new Setting(container)
+      .setName("Developer Type Definitions")
+      .setDesc("Generate or update the 'occ.d.ts' TypeScript declaration file for full IDE autocomplete.")
+      .addButton((btn) =>
+        btn
+          .setButtonText("Generate occ.d.ts")
+          .onClick(async () => {
+            try {
+              const path = await this.plugin.typeGen.ensureDeclarationsFile(
+                this.plugin.settings.commandsDirectory,
+                this.plugin.app.vault
+              );
+              new Notice("Generated 'occ.d.ts' in commands directory!");
+            } catch (err: any) {
+              new Notice(`Failed to generate occ.d.ts: ${err.message}`);
+            }
+          })
+      );
+
+    new Setting(container)
+      .setName("Starter Template Library")
+      .setDesc("Install bundled starter scripts and macro templates (daily briefing, format & export, sync worker).")
+      .addButton((btn) =>
+        btn
+          .setButtonText("Install Templates")
+          .onClick(async () => {
+            try {
+              const paths = await this.plugin.scaffolder.installStarterTemplates(
+                this.plugin.settings.commandsDirectory,
+                this.plugin.app.vault
+              );
+              new Notice(`Installed ${paths.length} starter templates!`);
+              await this.plugin.reloadAllCommands();
+            } catch (err: any) {
+              new Notice(`Failed to install templates: ${err.message}`);
+            }
+          })
       );
   }
 

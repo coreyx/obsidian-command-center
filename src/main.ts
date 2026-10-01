@@ -10,6 +10,8 @@ import { LifecycleManager } from "./core/LifecycleManager";
 import { OCCSettingTab } from "./settings/SettingTab";
 import type { CommandFileDescriptor } from "./types/command";
 import { StatusBarMonitor } from "./ui/StatusBarMonitor";
+import { TypeDefinitionGenerator } from "./core/TypeDefinitionGenerator";
+import { CommandScaffolder } from "./core/CommandScaffolder";
 
 export default class CommandCenterPlugin extends Plugin {
   public settings: OCCSettings = DEFAULT_SETTINGS;
@@ -20,6 +22,8 @@ export default class CommandCenterPlugin extends Plugin {
   public watcher!: FileWatcher;
   public lifecycle!: LifecycleManager;
   public statusBarMonitor?: StatusBarMonitor;
+  public typeGen = new TypeDefinitionGenerator();
+  public scaffolder = new CommandScaffolder();
 
   async onload(): Promise<void> {
     await this.loadSettings();
@@ -37,7 +41,14 @@ export default class CommandCenterPlugin extends Plugin {
     this.lifecycle = new LifecycleManager(this.app, this.registry, this.loader);
     this.watcher = new FileWatcher(this.app);
 
-    // 2. Register status bar monitor for background tasks
+    // 2. Ensure TypeScript declaration file (occ.d.ts) exists
+    try {
+      await this.typeGen.ensureDeclarationsFile(this.settings.commandsDirectory, this.app.vault);
+    } catch (e: any) {
+      console.error("[OCC] Error generating occ.d.ts:", e.message);
+    }
+
+    // 3. Register status bar monitor for background tasks
     const statusBarEl = this.addStatusBarItem();
     this.statusBarMonitor = new StatusBarMonitor(
       statusBarEl,
@@ -45,15 +56,23 @@ export default class CommandCenterPlugin extends Plugin {
       this.app
     );
 
-    // 3. Register settings tab
+    // 4. Register settings tab
     this.addSettingTab(new OCCSettingTab(this.app, this));
 
-    // 4. Register management command
+    // 5. Register management commands
     this.addCommand({
       id: "reload-commands",
       name: "Reload All Commands",
       callback: async () => {
         await this.reloadAllCommands();
+      },
+    });
+
+    this.addCommand({
+      id: "create-new-command",
+      name: "Create New Command",
+      callback: async () => {
+        await this.promptCreateNewCommand();
       },
     });
 
@@ -168,6 +187,53 @@ export default class CommandCenterPlugin extends Plugin {
       } catch (err: any) {
         console.error(`[OCC] Failed to load command from "${desc.path}":`, err.message);
       }
+    }
+  }
+
+  /**
+   * Interactive wizard for scaffolding a new command script or macro pipeline.
+   */
+  async promptCreateNewCommand(): Promise<void> {
+    const context = this.engine.createContext();
+
+    const name = await context.ui.prompt({
+      title: "Command Center — Create New Command",
+      placeholder: "e.g. Daily Briefing, Format Note, Sync Notes...",
+    });
+
+    if (!name || !name.trim()) return;
+
+    const choice = await context.ui.suggest(
+      [
+        { label: "JavaScript Script (.js) — Full scripting power with lifecycle hooks", type: "script" as const },
+        { label: "Declarative Macro (.macro.json) — Composable native command pipeline", type: "macro" as const },
+      ],
+      {
+        title: "Select Command Type",
+        renderItem: (item) => item.label,
+      }
+    );
+
+    if (!choice) return;
+
+    try {
+      const createdPath = await this.scaffolder.scaffoldCommand(
+        { name: name.trim(), type: choice.type },
+        this.settings.commandsDirectory,
+        this.app.vault,
+        this.app.workspace
+      );
+
+      context.ui.toast(`Command "${name.trim()}" created successfully!`, {
+        type: "success",
+      });
+
+      await this.reloadAllCommands();
+    } catch (err: any) {
+      context.ui.toast(`Failed to create command: ${err.message}`, {
+        type: "error",
+      });
+      console.error("[OCC Scaffolding Error]:", err);
     }
   }
 }
