@@ -7,27 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.0] - 2026-10-01
+## [1.0.0] - 2026-10-01
 
 ### Added
-- **Milestone 1: Core Engine & Dynamic Loader (MVP)**:
-  - Scaffolding with TypeScript 5.4, esbuild bundler, and Vitest test runner.
-  - `CommandScanner`: Recursive folder scanner detecting `.js`, `.mjs`, `.json`, and directory bundles.
-  - `ModuleLoader`: Dynamic module evaluator with cache-busting on Desktop and sandboxed evaluation on Mobile.
-  - `CommandRegistry`: In-memory command registry binding proxy commands directly to Obsidian's command palette.
-  - `ExecutionContextImpl` & `VaultHelperImpl`: Context injection providing `app`, active `file`, active `editor`, and atomic vault operations.
-- **Milestone 2: Lifecycle Engine & Zero-Downtime Hot-Reloading**:
-  - `FileWatcher`: Directory watcher monitoring commands folder with 200ms debounce buffer.
-  - `LifecycleManager`: State machine managing `DISCOVERED`, `INITIALIZING`, `READY`, `CLEANUP`, and `ERRORED` states.
-  - Hotkey preservation: Preserves user-assigned hotkeys across zero-downtime hot-reload cycles.
-  - `ExecutionEngine`: Pre-execution validation (`canExecute`), execution dispatch, and isolated error boundaries (`onError`).
-  - `OCCSettingTab`: Obsidian settings tab for configuring commands directory and manual reload triggers.
-- **Milestone 3: Native Command Bridge & Composable Macro Pipeline**:
-  - `OCCCommandBridgeImpl`: Programmatic bridge executing native Obsidian commands by ID with descriptive `CommandNotFoundError`.
-  - `MacroOrchestrator`: Parser and executor for declarative JSON macro pipelines (`*.macro.json`).
-  - Contextual Output Piping: Automatic data forwarding where step $N$ return values feed into step $N+1$ via `context.input` and `context.$prevOutput`.
-  - Step Execution Telemetry: Historical step execution records (`context.steps`) accessible to downstream commands.
-  - Step-level Error Policy Engine: Full support for `onError: "halt"`, `onError: "continue"`, and `onError: "fallback"` with `fallbackCommandId`.
 - **Milestone 4: Interactive Feedback & Human-in-the-Loop UI**:
   - `InteractiveToast`: Interactive notice component wrapping Obsidian's `Notice` with action buttons (`[Undo]`, `[Retry]`, etc.), variant styling (`primary`, `warning`), dynamic message updates, and error-safe action handlers.
   - `PromptModal`: Modal dialog extending `Modal` for single-line and multiline user text input with keyboard submission (`Enter`) and cancellation (`Escape`).
@@ -69,13 +51,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Performance benchmarks verifying command dispatch overhead is strictly below 5ms (< 0.1ms measured) and 100 consecutive hot-reload cycles complete with zero state corruption or memory leaks.
   - Automated GitHub Actions CI workflow (`.github/workflows/ci.yml`) running `typecheck`, Vitest test suite, and production bundle build on push and pull requests to `main`.
 - **Testing & Quality Assurance**:
-  - Comprehensive automated test suite consisting of 93 unit and integration tests across 15 test suites with 100% pass rate.
-  - Complete mock harness for Obsidian platform testing in Vitest (`tests/mocks/obsidian.ts`).
-  - Ultra-lean production bundle (`main.js` at ~43 KB).
+  - 93 unit and integration tests across 15 test suites with 100% pass rate.
+  - Full TypeScript 5.4 typecheck coverage and lean production bundling (~43 KB).
+
+## [0.1.0] - 2026-10-01
+
+### Added
+- **Milestone 1: Core Engine & Dynamic Loader (MVP)**:
+  - Scaffolding with TypeScript 5.4, esbuild bundler, and Vitest test runner.
+  - `CommandScanner`: Recursive folder scanner detecting `.js`, `.mjs`, `.json`, and directory bundles.
+  - `ModuleLoader`: Dynamic module evaluator with cache-busting on Desktop and sandboxed evaluation on Mobile.
+  - `CommandRegistry`: In-memory command registry binding proxy commands directly to Obsidian's command palette.
+  - `ExecutionContextImpl` & `VaultHelperImpl`: Context injection providing `app`, active `file`, active `editor`, and atomic vault operations.
+- **Milestone 2: Lifecycle Engine & Zero-Downtime Hot-Reloading**:
+  - `FileWatcher`: Directory watcher monitoring commands folder with 200ms debounce buffer.
+  - `LifecycleManager`: State machine managing `DISCOVERED`, `INITIALIZING`, `READY`, `CLEANUP`, and `ERRORED` states.
+  - Hotkey preservation: Preserves user-assigned hotkeys across zero-downtime hot-reload cycles.
+  - `ExecutionEngine`: Pre-execution validation (`canExecute`), execution dispatch, and isolated error boundaries (`onError`).
+  - `OCCSettingTab`: Obsidian settings tab for configuring commands directory and manual reload triggers.
+- **Milestone 3: Native Command Bridge & Composable Macro Pipeline**:
+  - `OCCCommandBridgeImpl`: Programmatic bridge executing native Obsidian commands by ID with descriptive `CommandNotFoundError`.
+  - `MacroOrchestrator`: Parser and executor for declarative JSON macro pipelines (`*.macro.json`).
+  - Contextual Output Piping: Automatic data forwarding where step $N$ return values feed into step $N+1$ via `context.input` and `context.$prevOutput`.
+  - Step Execution Telemetry: Historical step execution records (`context.steps`) accessible to downstream commands.
+  - Step-level Error Policy Engine: Full support for `onError: "halt"`, `onError: "continue"`, and `onError: "fallback"` with `fallbackCommandId`.
 - **Technical Specification Suite (`./spec/obsidian-command-center/`)**:
-  - `product.md`: Product vision, architecture principles, and user personas.
-  - `milestones.md`: 9 progressive milestones from MVP to public release.
-  - `requirements.md`: 26 EARS-format requirements with user stories and numbered acceptance criteria.
-  - `tech.md`: Technology stack specification (TypeScript, esbuild, Vitest, Svelte 5).
-  - `design.md`: Subsystem architecture, state machines, and Mermaid sequence/class diagrams.
-  - `tasks.md`: 36 implementation tasks with checklist traceability (all 36 tasks complete).
+  - Complete specifications: `product.md`, `milestones.md`, `requirements.md` (26 EARS requirements), `tech.md`, `design.md`, and `tasks.md` (36 tasks).

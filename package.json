@@ -1,6 +1,6 @@
 {
   "name": "obsidian-command-center",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "An extensible automation runtime and macro orchestration engine for Obsidian.",
   "main": "main.js",
   "scripts": {

@@ -1,4 +1,4 @@
-# Obsidian Command Center (OCC) v0.1.0 Release Notes
+# Obsidian Command Center (OCC) v1.0.0 Release Notes
 
 **Obsidian Command Center (OCC)** is an extensible automation runtime and macro orchestration engine built for [Obsidian](https://obsidian.md). It bridges the gap between simple hotkey macros and heavyweight, standalone community plugins. In OCC, **every command is an open-ended micro-extension** with complete lifecycle hooks, sequential output piping, concurrency queues, background workers, and interactive UI feedback.
 
@@ -6,7 +6,7 @@ This release represents the culmination of all 9 development milestones, fully s
 
 ---
 
-## What's New in v0.1.0
+## What's New in v1.0.0
 
 ### 1. Dynamic Discovery & Zero-Downtime Hot-Reloading (Milestones 1 & 2)
 - **Automatic Discovery:** Recursively scans your commands folder (`.obsidian/plugins/obsidian-command-center/commands`) for JavaScript scripts (`*.js`, `*.mjs`) and declarative macros (`*.macro.json`).
