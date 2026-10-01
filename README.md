@@ -20,6 +20,34 @@ In OCC, **every command is a lightweight micro-extension** with its own lifecycl
 
 ---
 
+## Installation
+
+### Via BRAT (Recommended for Beta Testing)
+
+[BRAT](https://github.com/TfTHacker/obsidian42-brat) (Beta Reviewers Auto-update Tester) makes it easy to install and test Obsidian Command Center before it is released to the official Obsidian Community Plugins directory:
+
+1. Install and enable the **BRAT** plugin from Obsidian's Community Plugins browser (`Settings` > `Community Plugins` > `Browse`).
+2. Navigate to `Settings` > `BRAT`.
+3. Under the **Beta Plugin List** section, click **Add Beta plugin**.
+4. Enter the GitHub repository path:
+   ```text
+   coreyx/obsidian-command-center
+   ```
+5. Click **Add Plugin**. BRAT will download the latest release files (`manifest.json`, `main.js`, and `styles.css`).
+6. Navigate to `Settings` > `Community Plugins` and enable **Command Center**.
+
+### Manual Installation
+
+1. Download `main.js`, `manifest.json`, and `styles.css` from the latest [GitHub Release](https://github.com/coreyx/obsidian-command-center/releases).
+2. Create a folder in your Obsidian vault:
+   ```text
+   <Vault>/.obsidian/plugins/obsidian-command-center/
+   ```
+3. Copy the downloaded files into that folder.
+4. Reload Obsidian (`Ctrl+R` or `Cmd+R`) and enable **Command Center** in `Settings` > `Community Plugins`.
+
+---
+
 ## Specification & Documentation
 
 Detailed project specifications, architecture, requirements, and roadmaps are organized in [`./spec/obsidian-command-center/`](./spec/obsidian-command-center/):

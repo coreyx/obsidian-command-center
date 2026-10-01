@@ -1,0 +1,39 @@
+/* Obsidian Command Center (OCC) Styles */
+
+.occ-empty-notice {
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 8px 0;
+}
+
+.occ-command-detail {
+  color: var(--text-muted);
+  font-size: 0.85em;
+  margin-left: 6px;
+}
+
+/* Toast action buttons (for interactive notices) */
+.occ-toast-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.occ-toast-button {
+  padding: 4px 10px;
+  font-size: 0.85em;
+  border-radius: var(--button-radius, 4px);
+  cursor: pointer;
+  background-color: var(--interactive-normal);
+  color: var(--text-normal);
+  border: 1px solid var(--background-modifier-border);
+}
+
+.occ-toast-button:hover {
+  background-color: var(--interactive-hover);
+}
+
+.occ-toast-button.mod-primary {
+  background-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
