@@ -78,6 +78,14 @@ export interface OCCCommandBridge {
   listCommands(): Array<{ id: string; name: string }>;
 }
 
+export interface QueueOptions {
+  haltOnError?: boolean;
+}
+
+export interface OCCQueueHelper {
+  push<T>(queueName: string, task: () => Promise<T> | T, options?: QueueOptions): Promise<T>;
+}
+
 export interface ExecutionContext {
   app: App;
   vault: VaultHelper;
@@ -86,6 +94,7 @@ export interface ExecutionContext {
   file: TFile | null;
   input: unknown;
   $prevOutput: unknown;
+  commandId?: string;
   steps?: Array<{
     stepIndex: number;
     stepId?: string;
@@ -95,5 +104,8 @@ export interface ExecutionContext {
   }>;
   commands: OCCCommandBridge;
   ui: OCCUIHelper;
+  queue: OCCQueueHelper;
   abortSignal: AbortSignal;
+  yield(): Promise<void>;
+  cancelDebounce(id?: string): boolean;
 }

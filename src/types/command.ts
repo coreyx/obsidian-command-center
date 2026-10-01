@@ -6,6 +6,7 @@ export interface OCCCommandMetadata {
   icon?: string;
   description?: string;
   queueName?: string;
+  haltOnError?: boolean;
   debounce?: number; // milliseconds
   throttle?: number; // milliseconds
   timeout?: number; // milliseconds, default: 15000

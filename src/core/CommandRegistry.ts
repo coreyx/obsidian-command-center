@@ -14,13 +14,13 @@ export class CommandRegistry {
   constructor(
     private app: App,
     private plugin: Plugin,
-    private executeCallback: (commandId: string) => Promise<unknown>
+    private executeCallback?: (commandId: string) => Promise<unknown>
   ) {}
 
   /**
    * Registers an OCCCommand with the internal registry and binds it to Obsidian's command palette.
    */
-  register(command: OCCCommand, filePath: string, isEnabled = true): void {
+  register(command: OCCCommand, filePath = "", isEnabled = true): void {
     const commandId = command.metadata.id;
 
     // If already registered, unregister previous instance first
@@ -36,7 +36,7 @@ export class CommandRegistry {
         name: `Command Center: ${command.metadata.name}`,
         icon: command.metadata.icon,
         callback: () => {
-          this.executeCallback(commandId).catch((err) => {
+          this.executeCallback?.(commandId)?.catch((err) => {
             console.error(`[OCC] Error executing command "${commandId}":`, err);
           });
         },

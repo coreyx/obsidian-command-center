@@ -71,6 +71,10 @@ export default class CommandCenterPlugin extends Plugin {
       });
     }
 
+    // 3. Clear scheduled timers and queues
+    this.engine?.getDebounceThrottleManager().clearAll();
+    this.engine?.getQueueManager().clearAll();
+
     this.registry.clear();
   }
 

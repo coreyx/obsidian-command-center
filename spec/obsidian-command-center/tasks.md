@@ -187,14 +187,14 @@ flowchart LR
 
 ## Milestone 5: Execution Engine — Async, Queuing & Scheduling
 
-- [ ] **TASK-19: Non-Blocking Asynchronous Runner**
+- [x] **TASK-19: Non-Blocking Asynchronous Runner**
   - **Implementation Steps:**
     1. Implement Promise-based asynchronous command runner.
     2. Expose `context.yield()` helper executing `new Promise(resolve => setTimeout(resolve, 0))` to relinquish main thread.
     3. Verify active editor keystrokes and typing responsiveness are maintained during async task execution.
   - **Acceptance Criteria:** [REQ-12.1](./requirements.md#L159), [REQ-12.2](./requirements.md#L160), [REQ-12.3](./requirements.md#L161).
 
-- [ ] **TASK-20: Named Serial FIFO Queue Manager**
+- [x] **TASK-20: Named Serial FIFO Queue Manager**
   - **Implementation Steps:**
     1. Implement `QueueManager` and `FIFOQueue` linked list data structure.
     2. Route commands declaring `queueName` to the designated queue.
@@ -202,7 +202,7 @@ flowchart LR
     4. Support `haltOnError: true` to pause or abort pending queue items on failure.
   - **Acceptance Criteria:** [REQ-13.1](./requirements.md#L170), [REQ-13.2](./requirements.md#L171), [REQ-13.3](./requirements.md#L172).
 
-- [ ] **TASK-21: Debounce & Throttle Scheduler**
+- [x] **TASK-21: Debounce & Throttle Scheduler**
   - **Implementation Steps:**
     1. Implement `DebounceThrottleManager` maintaining in-memory timer handles.
     2. Intercept commands with `metadata.debounce` to delay execution until quiet period elapses.

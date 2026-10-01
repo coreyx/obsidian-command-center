@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Milestone 5: Execution Engine — Async, Queuing & Scheduling**:
+  - `context.yield()`: Cooperative yielding mechanism to relinquish the main JavaScript event loop during intensive operations, ensuring fluid typing and editor responsiveness.
+  - `FIFOQueue` & `QueueManager`: Named serial FIFO queuing engine ensuring strict sequential, non-overlapping execution for note/vault mutating commands.
+  - Support for `metadata.queueName` on commands for automatic serial dispatch, plus `context.queue.push(queueName, task, options)` for programmatic task queuing.
+  - Queue error handling policy with `haltOnError: true` to pause or abort subsequent pending tasks when a critical error occurs.
+  - `DebounceThrottleManager`: High-frequency execution scheduler supporting `metadata.debounce` and `metadata.throttle`.
+  - `context.cancelDebounce()`: Cancellation method for aborting scheduled debounced command invocations.
+  - 11 new unit tests in `tests/scheduling.test.ts` (61 total unit tests across 11 test suites).
 - **Milestone 4: Interactive Feedback & Human-in-the-Loop UI**:
   - `InteractiveToast`: Interactive notice component wrapping Obsidian's `Notice` with action buttons (`[Undo]`, `[Retry]`, etc.), variant styling (`primary`, `warning`), dynamic message updates, and error-safe action handlers.
   - `PromptModal`: Modal dialog extending `Modal` for single-line and multiline user text input with keyboard submission (`Enter`) and cancellation (`Escape`).
