@@ -123,7 +123,7 @@ flowchart LR
 
 ## Milestone 3: Native Command Bridge & Composable Macro Pipeline
 
-- [ ] **TASK-12: Native Obsidian Command Bridge**
+- [x] **TASK-12: Native Obsidian Command Bridge**
   - **Implementation Steps:**
     1. Implement `OCCCommandBridge` class exposed on `context.commands`.
     2. Implement `execute(commandId, params)` mapping to `app.commands.executeCommandById(commandId)`.
@@ -131,7 +131,7 @@ flowchart LR
     4. Throw `CommandNotFoundError` with descriptive message if command is missing.
   - **Acceptance Criteria:** [REQ-09.1](./requirements.md#L124), [REQ-09.2](./requirements.md#L125), [REQ-09.3](./requirements.md#L126).
 
-- [ ] **TASK-13: Declarative Macro Parser & Sequential Runner**
+- [x] **TASK-13: Declarative Macro Parser & Sequential Runner**
   - **Implementation Steps:**
     1. Define JSON schema for `*.macro.json` files.
     2. Implement `MacroOrchestrator` to parse and validate macro definitions.
@@ -139,7 +139,7 @@ flowchart LR
     4. Register macro in Obsidian command palette under declared `name` and `id`.
   - **Acceptance Criteria:** [REQ-10.1](./requirements.md#L135), [REQ-10.2](./requirements.md#L136), [REQ-10.3](./requirements.md#L137).
 
-- [ ] **TASK-14: Sequential Output Piping & Data Bus**
+- [x] **TASK-14: Sequential Output Piping & Data Bus**
   - **Implementation Steps:**
     1. Capture return value of step $N$ in the macro runner.
     2. Supply return value as `context.input` and `context.$prevOutput` to step $N+1$.
@@ -147,7 +147,7 @@ flowchart LR
     4. Preserve primitive types and serializable objects across the pipe.
   - **Acceptance Criteria:** [REQ-08.1](./requirements.md#L111), [REQ-08.2](./requirements.md#L112), [REQ-08.3](./requirements.md#L113).
 
-- [ ] **TASK-15: Macro Step Fallback & Error Policy Engine**
+- [x] **TASK-15: Macro Step Fallback & Error Policy Engine**
   - **Implementation Steps:**
     1. Implement step-level error handling evaluating `onError: "halt" | "continue" | "fallback"`.
     2. If `halt`, abort macro execution immediately and display an error notice.

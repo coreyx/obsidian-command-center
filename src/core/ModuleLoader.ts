@@ -1,7 +1,11 @@
 import type { App } from "obsidian";
 import type { CommandFileDescriptor, OCCCommand, OCCCommandMetadata } from "../types/command";
 
+import { MacroOrchestrator } from "./MacroOrchestrator";
+
 export class ModuleLoader {
+  private macroOrchestrator = new MacroOrchestrator();
+
   constructor(private app: App) {}
 
   /**
@@ -24,43 +28,8 @@ export class ModuleLoader {
       throw new Error(`Failed to parse JSON in ${descriptor.path}: ${e.message}`);
     }
 
-    if (!parsed || typeof parsed !== "object") {
-      throw new Error(`Invalid JSON command in ${descriptor.path}: expected an object`);
-    }
-
-    const metadata: OCCCommandMetadata = {
-      id: parsed.id,
-      name: parsed.name,
-      icon: parsed.icon,
-      description: parsed.description,
-      queueName: parsed.queueName,
-      debounce: parsed.debounce,
-      throttle: parsed.throttle,
-      timeout: parsed.timeout,
-      isBackground: parsed.isBackground,
-    };
-
-    this.validateMetadata(metadata, descriptor.path);
-
-    // Basic declarative command runner for MVP (expanded with step piping in M3)
-    const command: OCCCommand = {
-      metadata,
-      async execute(context) {
-        if (Array.isArray(parsed.steps)) {
-          let lastResult: unknown = context.input;
-          for (const step of parsed.steps) {
-            const commandId = typeof step === "string" ? step : step.commandId;
-            if (commandId) {
-              lastResult = await context.commands.execute(commandId, step.params);
-            }
-          }
-          return lastResult;
-        }
-        return null;
-      },
-    };
-
-    return command;
+    const definition = this.macroOrchestrator.validateDefinition(parsed, descriptor.path);
+    return this.macroOrchestrator.createCommand(definition);
   }
 
   private async loadScriptCommand(descriptor: CommandFileDescriptor): Promise<OCCCommand> {

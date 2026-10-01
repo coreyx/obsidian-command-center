@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Milestone 3: Native Command Bridge & Composable Macro Pipeline**:
+  - `OCCCommandBridgeImpl`: Programmatic bridge executing native Obsidian commands by ID with descriptive `CommandNotFoundError`.
+  - `MacroOrchestrator`: Parser and executor for declarative JSON macro pipelines (`*.macro.json`).
+  - Contextual Output Piping: Automatic data forwarding where step $N$ return values feed into step $N+1$ via `context.input` and `context.$prevOutput`.
+  - Step Execution Telemetry: Historical step execution records (`context.steps`) accessible to downstream commands.
+  - Step-level Error Policy Engine: Full support for `onError: "halt"`, `onError: "continue"`, and `onError: "fallback"` with `fallbackCommandId`.
+  - 8 new unit tests covering command bridge lookup, sequential step piping, and error recovery policies (32 total passing tests).
+
 ## [0.1.0] - 2026-10-01
 
 ### Added

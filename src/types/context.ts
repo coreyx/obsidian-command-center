@@ -56,6 +56,13 @@ export interface ExecutionContext {
   file: TFile | null;
   input: unknown;
   $prevOutput: unknown;
+  steps?: Array<{
+    stepIndex: number;
+    stepId?: string;
+    commandId: string;
+    output?: unknown;
+    error?: Error;
+  }>;
   commands: OCCCommandBridge;
   ui: OCCUIHelper;
   abortSignal: AbortSignal;
